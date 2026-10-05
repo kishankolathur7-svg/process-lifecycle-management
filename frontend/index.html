@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Process Lifecycle Management</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">⚙</div>
+            <div>
+                <h1>Process<span>OS</span></h1>
+                <p>Lifecycle Manager</p>
+            </div>
+        </div>
+
+        <nav class="navigation">
+
+            <button class="nav-item active" data-section="dashboard">
+                <span>▦</span>
+                Dashboard
+            </button>
+
+            <button class="nav-item" data-section="processes">
+                <span>◉</span>
+                Processes
+            </button>
+
+            <button class="nav-item" data-section="scheduler">
+                <span>◫</span>
+                Scheduler
+            </button>
+
+            <button class="nav-item" data-section="pcb">
+                <span>▣</span>
+                PCB Monitor
+            </button>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="system-status">
+                <span class="status-dot"></span>
+
+                <div>
+                    <strong>System Online</strong>
+                    <small>C Engine Ready</small>
+                </div>
+            </div>
+
+            <div class="version">
+                ProcessOS v1.0
+            </div>
+
+        </div>
+
+    </aside>
+    <main class="main-content">
+        <header class="topbar">
+
+            <div>
+                <p class="breadcrumb">Operating System / Process Manager</p>
+
+                <h2 id="page-title">
+                    Process Dashboard
+                </h2>
+            </div>
+
+            <div class="topbar-right">
+
+                <div class="clock">
+                    <span>●</span>
+                    <span id="system-time">--:--:--</span>
+                </div>
+
+                <div class="profile">
+                    <div class="profile-avatar">
+                        OS
+                    </div>
+
+                    <div>
+                        <strong>Administrator</strong>
+                        <small>System User</small>
+                    </div>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <section id="dashboard-section" class="page-section active">
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <div class="stat-icon total">Σ</div>
+
+                    <div>
+                        <span>Total Processes</span>
+                        <strong id="total-processes">0</strong>
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-icon ready">R</div>
+
+                    <div>
+                        <span>Ready</span>
+                        <strong id="ready-processes">0</strong>
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-icon running">▶</div>
+
+                    <div>
+                        <span>Running</span>
+                        <strong id="running-processes">0</strong>
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-icon suspended">Ⅱ</div>
+
+                    <div>
+                        <span>Suspended</span>
+                        <strong id="suspended-processes">0</strong>
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-icon terminated">✓</div>
+
+                    <div>
+                        <span>Terminated</span>
+                        <strong id="terminated-processes">0</strong>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- CREATE PROCESS -->
+            <div class="content-card create-card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h3>Create New Process</h3>
+
+                        <p>
+                            Create a process and add it to the process table.
+                        </p>
+                    </div>
+
+                    <div class="card-label">
+                        PROCESS CREATION
+                    </div>
+
+                </div>
+
+
+                <form id="create-process-form">
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label for="process-name">
+                                Process Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="process-name"
+                                placeholder="e.g. Process_A"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="priority">
+                                Priority
+                            </label>
+
+                            <input
+                                type="number"
+                                id="priority"
+                                min="1"
+                                max="10"
+                                value="5"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="burst-time">
+                                Burst Time
+                            </label>
+
+                            <input
+                                type="number"
+                                id="burst-time"
+                                min="1"
+                                value="10"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="arrival-time">
+                                Arrival Time
+                            </label>
+
+                            <input
+                                type="number"
+                                id="arrival-time"
+                                min="0"
+                                value="0"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-action">
+
+                            <button
+                                type="submit"
+                                class="primary-button"
+                            >
+                                + Create Process
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <!-- PROCESS TABLE -->
+            <div class="content-card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h3>Process Table</h3>
+
+                        <p>
+                            Monitor and control active processes.
+                        </p>
+                    </div>
+
+                    <div class="table-tools">
+
+                        <select id="state-filter">
+
+                            <option value="ALL">
+                                All States
+                            </option>
+
+                            <option value="NEW">
+                                New
+                            </option>
+
+                            <option value="READY">
+                                Ready
+                            </option>
+
+                            <option value="RUNNING">
+                                Running
+                            </option>
+
+                            <option value="SUSPENDED">
+                                Suspended
+                            </option>
+
+                            <option value="TERMINATED">
+                                Terminated
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>PID</th>
+                                <th>PROCESS</th>
+                                <th>PRIORITY</th>
+                                <th>BURST</th>
+                                <th>REMAINING</th>
+                                <th>STATE</th>
+                                <th>ACTIONS</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="process-table-body">
+                        </tbody>
+
+                    </table>
+
+                    <div
+                        id="empty-state"
+                        class="empty-state"
+                    >
+                        No processes available.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- LIFECYCLE -->
+            <div class="content-card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h3>Process Lifecycle</h3>
+
+                        <p>
+                            Standard operating system process state transitions.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="lifecycle">
+
+                    <div class="lifecycle-node new-node">
+                        <div class="node-circle">N</div>
+                        <strong>NEW</strong>
+                        <small>Process Created</small>
+                    </div>
+
+
+                    <div class="lifecycle-arrow">
+                        →
+                    </div>
+
+
+                    <div class="lifecycle-node ready-node">
+                        <div class="node-circle">R</div>
+                        <strong>READY</strong>
+                        <small>Waiting for CPU</small>
+                    </div>
+
+
+                    <div class="lifecycle-arrow">
+                        →
+                    </div>
+
+
+                    <div class="lifecycle-node running-node">
+                        <div class="node-circle">▶</div>
+                        <strong>RUNNING</strong>
+                        <small>Using CPU</small>
+                    </div>
+
+
+                    <div class="lifecycle-arrow">
+                        →
+                    </div>
+
+
+                    <div class="lifecycle-node terminated-node">
+                        <div class="node-circle">✓</div>
+                        <strong>TERMINATED</strong>
+                        <small>Execution Complete</small>
+                    </div>
+
+                </div>
+
+
+                <div class="suspend-flow">
+
+                    <span>RUNNING</span>
+
+                    <span class="down-arrow">
+                        ↓
+                    </span>
+
+                    <span>SUSPENDED</span>
+
+                    <span class="down-arrow">
+                        ↓
+                    </span>
+
+                    <span>READY</span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- PROCESSES PAGE -->
+        <section
+            id="processes-section"
+            class="page-section"
+        >
+
+            <div class="page-heading">
+                <h3>Process Management</h3>
+
+                <p>
+                    Detailed process management and lifecycle controls.
+                </p>
+            </div>
+
+            <div class="content-card">
+
+                <div class="process-management-content">
+
+                    <h3>Process Manager</h3>
+
+                    <p>
+                        Select a process from the dashboard to manage
+                        its lifecycle.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- SCHEDULER PAGE -->
+        <section
+            id="scheduler-section"
+            class="page-section"
+        >
+
+            <div class="page-heading">
+
+                <h3>CPU Scheduler</h3>
+
+                <p>
+                    Select a scheduling algorithm and analyze process execution.
+                </p>
+
+            </div>
+
+
+            <div class="scheduler-grid">
+
+                <div class="content-card">
+
+                    <div class="card-header">
+
+                        <div>
+                            <h3>Scheduling Algorithm</h3>
+
+                            <p>
+                                Choose an algorithm for simulation.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Algorithm
+                        </label>
+
+                        <select id="scheduler-algorithm">
+
+                            <option value="FCFS">
+                                First Come First Serve (FCFS)
+                            </option>
+
+                            <option value="SJF">
+                                Shortest Job First (SJF)
+                            </option>
+
+                            <option value="PRIORITY">
+                                Priority Scheduling
+                            </option>
+
+                            <option value="ROUND_ROBIN">
+                                Round Robin
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div
+                        id="quantum-group"
+                        class="form-group hidden"
+                    >
+
+                        <label>
+                            Time Quantum
+                        </label>
+
+                        <input
+                            type="number"
+                            id="time-quantum"
+                            min="1"
+                            value="2"
+                        >
+
+                    </div>
+
+
+                    <button
+                        id="run-scheduler"
+                        class="primary-button scheduler-button"
+                    >
+                        ▶ Run Scheduler
+                    </button>
+
+                </div>
+
+
+                <div class="content-card">
+
+                    <div class="card-header">
+
+                        <div>
+                            <h3>Scheduling Results</h3>
+
+                            <p>
+                                Gantt chart will appear here.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="gantt-chart"
+                        class="gantt-chart"
+                    >
+
+                        <div class="gantt-placeholder">
+                            Run the scheduler to generate a Gantt chart.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- PCB PAGE -->
+        <section
+            id="pcb-section"
+            class="page-section"
+        >
+
+            <div class="page-heading">
+
+                <h3>Process Control Block</h3>
+
+                <p>
+                    View the information maintained for each process.
+                </p>
+
+            </div>
+
+
+            <div
+                id="pcb-container"
+                class="pcb-grid"
+            >
+
+                <div class="content-card pcb-placeholder">
+
+                    <div class="pcb-icon">
+                        ▣
+                    </div>
+
+                    <h3>Select a Process</h3>
+
+                    <p>
+                        Click the PCB button in the process table
+                        to view its complete Process Control Block.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- TOAST -->
+    <div
+        id="toast"
+        class="toast"
+    >
+        <span id="toast-message"></span>
+    </div>
+
+
+    <script src="js/app.js"></script>
+
+</body>
+</html>
